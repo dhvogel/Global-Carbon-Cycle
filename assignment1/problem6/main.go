@@ -150,7 +150,7 @@ func createPlotForFile(inputFileName string, outputFileName string) (*float64, e
 
 func main() {
 	// Constants
-	molarMassCO2 := 44.01
+	molarMassCO2 := float64(1000 / 44)
 
 	daytimeCovariance, err := createPlotForFile("daytime.eddies.csv", "daytime_plot.png")
 	if err != nil {

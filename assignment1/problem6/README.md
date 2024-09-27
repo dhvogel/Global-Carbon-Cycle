@@ -19,10 +19,10 @@ go run main.go
 
 ```
 Stats for daytime.eddies.csv: 
-Slope: 0.0000, Intercept: 0.3040, R^2: 0.3432, Covariance: 0.3227
-Daytime CO2 Flux: 14199960.8544 micromoles/m^2 s
+Slope: -0.0000, Intercept: -0.4871, R^2: -0.2119, Covariance: -1.4093
+Daytime CO2 Flux: -31005347.5757 micromoles/m^2 s
 
 Stats for nighttime.eddies.csv: 
 Slope: 0.0000, Intercept: 0.3040, R^2: 0.3432, Covariance: 0.3227
-Nighttime CO2 Flux: 14199960.8544 micromoles/m^2 s
+Nighttime CO2 Flux: 7098367.1619 micromoles/m^2 s
 ```

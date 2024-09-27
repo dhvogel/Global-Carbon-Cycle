@@ -44,6 +44,4 @@ func main() {
 	if err := p.Save(6*vg.Inch, 6*vg.Inch, "michaelis_menten.png"); err != nil {
 		panic(err)
 	}
-
-	fmt.Println("Michaelis-Menten plot saved as 'michaelis_menten.png'")
 }

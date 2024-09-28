@@ -92,13 +92,13 @@ func plotAndFit(wPrime, cPrime []float64, outputFileName string) (slope, interce
 	p := plot.New()
 
 	p.Title.Text = "CO2 vs Vertical Velocity"
-	p.Y.Label.Text = "Vertical Velocity Perturbation (w')"
-	p.X.Label.Text = "CO2 Perturbation (C')"
+	p.X.Label.Text = "w prime"
+	p.Y.Label.Text = "c prime"
 
 	pts := make(plotter.XYs, len(wPrime))
 	for i := range wPrime {
-		pts[i].X = cPrime[i]
-		pts[i].Y = wPrime[i]
+		pts[i].Y = cPrime[i]
+		pts[i].X = wPrime[i]
 	}
 
 	// Scatter plot
@@ -128,9 +128,8 @@ func plotAndFit(wPrime, cPrime []float64, outputFileName string) (slope, interce
 	return slope, intercept, rValue, covariance
 }
 
-func calculateCO2Flux(covariance float64, molarMassCO2 float64) float64 {
-	// Flux = covariance * air density * molar mass of CO2 / volume (conversion factor)
-	flux := covariance * molarMassCO2 * 1e6
+func calculateCO2Flux(covariance float64, CO2ConversionConstant float64) float64 {
+	flux := covariance * CO2ConversionConstant * 1e6
 	return flux
 }
 
@@ -150,14 +149,14 @@ func createPlotForFile(inputFileName string, outputFileName string) (*float64, e
 
 func main() {
 	// Constants
-	molarMassCO2 := float64(1000 / 44)
+	CO2ConversionConstant := float64(1000 / 44)
 
 	daytimeCovariance, err := createPlotForFile("daytime.eddies.csv", "daytime_plot.png")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	daytimeFlux := calculateCO2Flux(*daytimeCovariance, molarMassCO2)
+	daytimeFlux := calculateCO2Flux(*daytimeCovariance, CO2ConversionConstant)
 	fmt.Printf("Daytime CO2 Flux: %.4f micromoles/m^2 s\n\n", daytimeFlux)
 
 	nighttimeCovariance, err := createPlotForFile("nighttime.eddies.csv", "nighttime_plot.png")

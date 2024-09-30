@@ -149,7 +149,7 @@ func createPlotForFile(inputFileName string, outputFileName string) (*float64, e
 
 func main() {
 	// Constants
-	CO2ConversionConstant := float64(1000 / 44)
+	CO2ConversionConstant := float64(1000/44) / 1e6
 
 	daytimeCovariance, err := createPlotForFile("daytime.eddies.csv", "daytime_plot.png")
 	if err != nil {
@@ -164,7 +164,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	nighttimeFlux := calculateCO2Flux(*nighttimeCovariance, molarMassCO2)
+	nighttimeFlux := calculateCO2Flux(*nighttimeCovariance, CO2ConversionConstant)
 	fmt.Printf("Nighttime CO2 Flux: %.4f micromoles/m^2 s\n\n", nighttimeFlux)
 
 }

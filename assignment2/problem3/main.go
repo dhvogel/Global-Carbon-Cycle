@@ -34,7 +34,7 @@ func plotGraph(dataSets [][]float64, graphName string) {
 	p.Y.Label.Text = "P (Plant Carbon) (in GtC)"
 	// To see 500 on the Y axis
 	p.Y.Min = 0
-	p.Y.Max = 600
+	p.Y.Max = 700
 
 	// See every 100 units on Y axis
 	p.Y.Tick.Marker = plot.ConstantTicks([]plot.Tick{
@@ -45,6 +45,7 @@ func plotGraph(dataSets [][]float64, graphName string) {
 		{Value: 400, Label: "400"},
 		{Value: 500, Label: "500"},
 		{Value: 600, Label: "600"},
+		{Value: 700, Label: "700"},
 	})
 
 	if err := p.Save(8*vg.Inch, 4*vg.Inch, graphName); err != nil {
@@ -73,6 +74,10 @@ func main() {
 	P1 := calculatePoints(g, K, L, 100, numPoints)
 	P2 := calculatePoints(g, K, L, 200, numPoints)
 	P3 := calculatePoints(g, K, L, 300, numPoints)
+	P4 := calculatePoints(g, K, L, 400, numPoints)
+	P5 := calculatePoints(g, K, L, 500, numPoints)
+	P6 := calculatePoints(g, K, L, 600, numPoints)
+	P7 := calculatePoints(g, K, L, 700, numPoints)
 
-	plotGraph([][]float64{P1, P2, P3}, "plant_carbon.png")
+	plotGraph([][]float64{P1, P2, P3, P4, P5, P6, P7}, "plant_carbon.png")
 }

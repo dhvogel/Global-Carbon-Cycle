@@ -10,14 +10,24 @@ import (
 )
 
 // Function to plot the graph
-func plotGraph(data []float64) {
-	pts := make(plotter.XYs, len(data))
-	for i := range pts {
-		pts[i].X = float64(i)
-		pts[i].Y = data[i]
-	}
-
+func plotGraph(dataSets [][]float64, graphName string) {
 	p := plot.New()
+
+	for idx, data := range dataSets {
+		pts := make(plotter.XYs, len(data))
+		for i := range pts {
+			pts[i].X = float64(i)
+			pts[i].Y = data[i]
+		}
+
+		line, err := plotter.NewLine(pts)
+		if err != nil {
+			panic(err)
+		}
+		line.Color = plotutil.Color(idx)
+		p.Add(line)
+		p.Legend.Add(fmt.Sprintf("P0 = %d", (idx+1)*100), line)
+	}
 
 	p.Title.Text = "Plant Carbon Over Time"
 	p.X.Label.Text = "Time (years)"
@@ -37,16 +47,21 @@ func plotGraph(data []float64) {
 		{Value: 600, Label: "600"},
 	})
 
-	err := plotutil.AddLinePoints(p, "Plant Carbon", pts)
-	if err != nil {
+	if err := p.Save(8*vg.Inch, 4*vg.Inch, graphName); err != nil {
 		panic(err)
 	}
 
-	if err := p.Save(8*vg.Inch, 4*vg.Inch, "plant_carbon.png"); err != nil {
-		panic(err)
-	}
+	fmt.Printf("\nPlot saved to '%s'\n", graphName)
+}
 
-	fmt.Println("Plot saved to 'plant_carbon.png'")
+func calculatePoints(g float64, K float64, L float64, initialCarbonStock float64, numPoints int) []float64 {
+	P := make([]float64, numPoints)
+	P[0] = initialCarbonStock
+
+	for i := 1; i < numPoints; i++ {
+		P[i] = P[i-1] + g*(1-P[i-1]/K-1/L)*P[i-1]
+	}
+	return P
 }
 
 func main() {
@@ -55,12 +70,9 @@ func main() {
 	L := 3.0
 	numPoints := 100
 
-	P := make([]float64, numPoints)
-	P[0] = 100
+	P1 := calculatePoints(g, K, L, 100, numPoints)
+	P2 := calculatePoints(g, K, L, 200, numPoints)
+	P3 := calculatePoints(g, K, L, 300, numPoints)
 
-	for i := 1; i < numPoints; i++ {
-		P[i] = P[i-1] + g*(1-P[i-1]/K-1/L)*P[i-1]
-	}
-
-	plotGraph(P)
+	plotGraph([][]float64{P1, P2, P3}, "plant_carbon.png")
 }

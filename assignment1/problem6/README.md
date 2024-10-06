@@ -1,4 +1,4 @@
-# Problem 6
+# Assignment 1, Problem 6
 
 ```shell
 go get -u
